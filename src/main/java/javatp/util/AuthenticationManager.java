@@ -3,6 +3,7 @@ package javatp.util;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 @Component
 public class AuthenticationManager {
+    @Autowired private UserRepository userRepository;
     // Para logging en consola
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationManager.class);
 
@@ -44,7 +46,7 @@ public class AuthenticationManager {
             // El token es inválido
             throw new Exception("Bad token");
         }
-        User user = UserRepository.get().getOne(username);
+        User user = userRepository.findByUsername(username);
         if (user == null)
             // El usuario no existe
             throw new Exception("User not found");
@@ -53,7 +55,7 @@ public class AuthenticationManager {
 
     public String generateToken(User user) throws Exception {
         // Busca el usuario con ese nombre
-        User savedUser = UserRepository.get().getOne(user.getUsername());
+        User savedUser = userRepository.findByUsername(user.getUsername());
 
         if (savedUser == null) {
             // Si el usuario no existe, lanza una excepción
@@ -78,5 +80,8 @@ public class AuthenticationManager {
             // La contraseña es inválida
             throw new Exception("Wrong password");
         }
+    }
+    public String hashPassword(String password){
+        return encoder.encode(password);
     }
 }

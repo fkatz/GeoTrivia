@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javatp.entities.User;
 import javatp.repositories.POIRepository;
+import javatp.repositories.UserRepository;
 import javatp.util.AuthenticationManager;
 import javatp.util.Message;
 import javatp.entities.POI;
@@ -24,6 +25,7 @@ import javatp.entities.POI;
 public class Application {
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	@Autowired private POIRepository poiRepository;
+	@Autowired private UserRepository userRepository;
 
 	@Autowired
 	private AuthenticationManager auth;
@@ -60,6 +62,17 @@ public class Application {
 			String token = auth.generateToken(user);
 			logger.info(token);
 			return new ResponseEntity<>(token, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Message(e.getMessage(), null));
+		}
+	}
+
+	@PostMapping(value = "/register")
+	public ResponseEntity<Object> register(@RequestBody User user) {
+		try {
+			user.setPassword(auth.hashPassword(user.getPassword()));
+			user = userRepository.save(user);
+			return new ResponseEntity<>(new Message(null,user.getId().toString()), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new Message(e.getMessage(), null));
 		}
