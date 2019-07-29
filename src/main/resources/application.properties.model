@@ -5,9 +5,9 @@ spring.datasource.hikari.connectionTimeout=20000
 spring.datasource.hikari.maximumPoolSize=5
 
 ## PostgreSQL
-spring.datasource.url=jdbc:postgresql://pi.kosmov.space:5432/javatp
-spring.datasource.username=postgres
-spring.datasource.password=fedeSQL!
+spring.datasource.url=jdbc:postgresql://host:port/database
+spring.datasource.username=
+spring.datasource.password=
 
 #drop n create table again, good for testing, comment this in production
 spring.jpa.hibernate.ddl-auto=create

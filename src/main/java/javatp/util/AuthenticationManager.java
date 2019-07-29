@@ -1,4 +1,4 @@
-package javatp.application;
+package javatp.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

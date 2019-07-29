@@ -13,7 +13,7 @@ public class UserRepository {
 
     private UserRepository() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        this.users.put("fede", new User("fede", encoder.encode("fedefede")));
+        this.users.put("fkatz", new User("fkatz", encoder.encode("fedefede")));
     }
 
     public static UserRepository get() {

@@ -1,9 +1,18 @@
 package javatp.entities;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class POI {
     private String name;
     private double lat;
     private double lng;
+    public POI(){}
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id; 
 
     public String getName() {
         return name;
