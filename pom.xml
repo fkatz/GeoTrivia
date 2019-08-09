@@ -43,6 +43,17 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-spatial</artifactId>
+      <version>5.0.2.Final</version>
+      <exclusions>
+          <exclusion>
+              <artifactId>postgresql</artifactId>
+              <groupId>postgresql</groupId>
+          </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
