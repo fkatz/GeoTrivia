@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javatp.entities.User;
+import javatp.logic.UserLogic;
 import javatp.repositories.POIRepository;
 import javatp.repositories.UserRepository;
 import javatp.util.AuthenticationManager;
@@ -25,7 +26,7 @@ import javatp.entities.POI;
 public class Application {
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	@Autowired private POIRepository poiRepository;
-	@Autowired private UserRepository userRepository;
+	@Autowired private UserLogic users;
 
 	@Autowired
 	private AuthenticationManager auth;
@@ -38,6 +39,7 @@ public class Application {
 	public ResponseEntity<Object> createPOI(@RequestBody POI poi,
 			@RequestHeader(value = "Authorization") String token) {
 		try {
+			logger.info(poi.toString());
 			auth.authenticateToken(token);
 			poiRepository.save(poi);
 			return ResponseEntity.ok(poi);
@@ -67,12 +69,21 @@ public class Application {
 		}
 	}
 
-	@PostMapping(value = "/register")
-	public ResponseEntity<Object> register(@RequestBody User user) {
+	@PostMapping(value = "/user")
+	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		try {
-			user.setPassword(auth.hashPassword(user.getPassword()));
-			user = userRepository.save(user);
+			user = users.save(user);
 			return new ResponseEntity<>(new Message(null,user.getId().toString()), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Message(e.getMessage(), null));
+		}
+	}
+
+	@GetMapping(value = "/users")
+	public ResponseEntity<Object> getUsers(@RequestHeader(value = "Authorization") String token) {
+		try {
+			auth.authenticateToken(token);
+			return ResponseEntity.ok(users.findAll());
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new Message(e.getMessage(), null));
 		}
