@@ -1,4 +1,4 @@
-package javatp.util;
+package javatp.domain;
 
 public class Message {
     private String error;

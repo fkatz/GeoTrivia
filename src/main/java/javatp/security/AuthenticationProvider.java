@@ -8,8 +8,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import javatp.entities.User;
-import javatp.logic.UserLogic;
+import javatp.domain.User;
+import javatp.exception.AuthenticationException;
+import javatp.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @Component
 public class AuthenticationProvider {
     @Autowired
-    private UserLogic users;
+    private UserService users;
     // Para logging en consola
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationProvider.class);
 
@@ -31,27 +32,27 @@ public class AuthenticationProvider {
     // Tiempo de expiración
     // public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
-    public User authenticateToken(String token) throws Exception {
+    public User authenticateToken(String token) throws AuthenticationException {
         String username;
         try {
             // Devuelve el nombre de usuario encriptado en el token y lo valida
             username = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
         } catch (ExpiredJwtException expiredException) {
             // El token expiró
-            throw new Exception("Expired token");
+            throw new AuthenticationException("Expired token");
         } catch (Exception e) {
             // El token es inválido
-            throw new Exception("Bad token");
+            throw new AuthenticationException("Bad token");
         }
-        User user = users.findByUsername(username);
+        User user = users.findUser(username);
         if (user == null)
             // El usuario no existe
-            throw new Exception("User not found");
+            throw new AuthenticationException("User not found");
         return user;
     }
 
-    public String generateToken(User user) throws Exception {
-        if(users.authenticate(user)) {
+    public String generateToken(User user) throws AuthenticationException {
+        if(users.authenticateUser(user)) {
             // Claims son las propiedades que se encriptarán en el token
             // Se pueden agregar propiedades con el método put(String,Object)
             Claims claims = Jwts.claims();
@@ -67,7 +68,7 @@ public class AuthenticationProvider {
             return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
         } else {
             // No se autenticó correctamente
-            throw new Exception("Wrong username or password");
+            throw new AuthenticationException("Wrong username or password");
         }
     }
 }

@@ -1,10 +1,14 @@
-package javatp.entities;
+package javatp.domain;
 import javax.persistence.Entity;
+
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,6 +27,9 @@ public class POI {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id; 
+
+    @OneToMany(mappedBy = "poi")
+    private List<Hint> hints;
 
     public String getName() {
         return name;

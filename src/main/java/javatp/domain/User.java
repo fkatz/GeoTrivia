@@ -1,4 +1,4 @@
-package javatp.entities;
+package javatp.domain;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;

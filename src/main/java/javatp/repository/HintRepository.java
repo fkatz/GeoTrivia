@@ -1,11 +1,10 @@
-package javatp.repositories;
+package javatp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javatp.entities.Hint;
+import javatp.domain.Hint;
 
 @Repository
 public interface HintRepository extends JpaRepository<Hint, Long> {
-
 }

@@ -10,16 +10,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javatp.entities.User;
-import javatp.util.Message;
+import javatp.domain.User;
 
 public class JWTFilter extends GenericFilterBean {
     private AuthenticationProvider authManager;
@@ -36,19 +33,15 @@ public class JWTFilter extends GenericFilterBean {
             if (user != null) {
                 ArrayList<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>();
                 list.add(new SimpleGrantedAuthority("ROLE_USER"));
-                Authentication auth = new UsernamePasswordAuthenticationToken("pepe", "", list);
+                Authentication auth = new UsernamePasswordAuthenticationToken(user, "", list);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } else {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
         } catch (Exception e) {
-            ObjectMapper mapper = new ObjectMapper();
-            String responseJSON = mapper.writeValueAsString(new Message("Authentication error",e.getMessage()));
-            ((HttpServletResponse)res).setStatus(401);
-            res.setContentType("application/json");
-            res.setContentLength(responseJSON.length());
-            res.getWriter().write(responseJSON);
-        } finally {
+            ((HttpServletResponse)res).setHeader("JWTError", e.getMessage());
+        }
+        finally {
             filterChain.doFilter(req, res);
         }
     }
