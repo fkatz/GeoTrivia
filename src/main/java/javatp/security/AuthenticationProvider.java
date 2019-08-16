@@ -1,4 +1,4 @@
-package javatp.util;
+package javatp.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ import org.slf4j.LoggerFactory;
 // Esta clase se encarga de generar y autenticar los tokens.
 
 @Component
-public class AuthenticationManager {
+public class AuthenticationProvider {
     @Autowired
     private UserLogic users;
     // Para logging en consola
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationProvider.class);
 
     // Key para encriptación de tokens
     @Value("${jwt.secret}")
