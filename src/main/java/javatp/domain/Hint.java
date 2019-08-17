@@ -37,5 +37,13 @@ public class Hint {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public POI getPoi() {
+        return poi;
+    }
+
+    public void setPoi(POI poi) {
+        this.poi = poi;
+    }
     
 }

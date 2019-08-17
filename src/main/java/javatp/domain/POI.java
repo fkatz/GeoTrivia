@@ -66,4 +66,12 @@ public class POI {
     this.location = gf.createPoint(new Coordinate(lng,lat));
     this.name = name;
 }
+
+    public List<Hint> getHints() {
+        return hints;
+    }
+
+    public void setHints(List<Hint> hints) {
+        this.hints = hints;
+    }
 }
