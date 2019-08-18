@@ -3,6 +3,7 @@ package javatp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import javatp.domain.POI;
+import javatp.exception.IncompleteObjectException;
 import javatp.repository.POIRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,10 @@ public class POIService {
     }
 
     public POI createPOI(POI poi) {
-        return poiRepository.save(poi);
+        if (poi.getLat() != 0 && poi.getLng() != 0 && poi.getName() != "") {
+            return poiRepository.save(poi);
+        } else
+            throw new IncompleteObjectException("All properties are required");
     }
 
     public boolean deletePOI(POI poi) {

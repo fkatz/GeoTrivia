@@ -12,4 +12,8 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(AuthenticationException exception) {
         return ResponseEntity.badRequest().body(new Message("Authentication error", exception.getMessage()));
     }
+    @ExceptionHandler(value = IncompleteObjectException.class)
+    public ResponseEntity<Object> exception(IncompleteObjectException exception) {
+        return ResponseEntity.badRequest().body(new Message("Incomplete object error", exception.getMessage()));
+    }
 }
