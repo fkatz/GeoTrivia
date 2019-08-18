@@ -2,6 +2,8 @@ package javatp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+
+import javatp.domain.Hint;
 import javatp.domain.POI;
 import javatp.exception.IncompleteObjectException;
 import javatp.repository.POIRepository;

@@ -1,4 +1,5 @@
 package javatp.domain;
+
 import javax.persistence.Entity;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.PrecisionModel;
+
 @Entity
 @Table(name = "Pois")
 public class POI {
@@ -23,12 +25,20 @@ public class POI {
     @Column(name = "location", nullable = false, columnDefinition = "geometry(Point,4326)")
     @JsonIgnore
     private Point location;
-    public POI(){}
+
+    public POI() {
+    }
+
+    public POI(Long id) {
+        this.id = id;
+    }
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id; 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @OneToMany(mappedBy = "poi")
+    @JsonIgnore
     private List<Hint> hints;
 
     public String getName() {
@@ -50,27 +60,31 @@ public class POI {
     public Long getId() {
         return id;
     }
-    public Double getLng(){
+
+    public Double getLng() {
         return location.getX();
     }
-    public Double getLat(){
+
+    public Double getLat() {
         return location.getY();
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public POI(@JsonProperty("name") String name, 
-            @JsonProperty("lat") double lat, 
-            @JsonProperty("lng") double lng) {
-                GeometryFactory gf = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING),4326);
-    this.location = gf.createPoint(new Coordinate(lng,lat));
-    this.name = name;
-}
 
+    public POI(@JsonProperty("name") String name, @JsonProperty("lat") double lat, @JsonProperty("lng") double lng) {
+        GeometryFactory gf = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), 4326);
+        this.location = gf.createPoint(new Coordinate(lng, lat));
+        this.name = name;
+    }
+
+    @JsonIgnore
     public List<Hint> getHints() {
         return hints;
     }
 
+    @JsonIgnore
     public void setHints(List<Hint> hints) {
         this.hints = hints;
     }

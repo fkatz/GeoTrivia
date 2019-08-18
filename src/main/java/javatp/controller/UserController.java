@@ -33,13 +33,13 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(value = "/user")
+	@PostMapping(value = "")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		User newUser = userService.createUser(user);
 		return ResponseEntity.ok(newUser);
 	}
 
-	@GetMapping(value = "/user/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<Object> getPOI(@PathVariable("id") long id) {
 		User user = userService.getUser(id);
 		return ResponseEntity.ok(user);

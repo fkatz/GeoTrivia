@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Hints")
 public class Hint {
@@ -18,9 +20,14 @@ public class Hint {
 
     @ManyToOne
     @JoinColumn(name="poi_id")
+    @JsonIgnore
     private POI poi;
 
     public Hint() {}
+
+    public Hint(Long id){
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

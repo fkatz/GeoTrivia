@@ -26,19 +26,19 @@ public class POIController{
     @Autowired
     private POIService poiService;
     
-	@PostMapping(value = "/poi")
+	@PostMapping(value = "")
 	public ResponseEntity<Object> createPOI(@RequestBody POI poi) {
 		POI newPOI = poiService.createPOI(poi);
 		return ResponseEntity.ok(newPOI);
     }
     
-    @GetMapping(value = "/poi/{id}")
+    @GetMapping(value = "/{id}")
 	public ResponseEntity<Object> getPOI(@PathVariable("id") long id) {
 		POI poi = poiService.getPOI(id);
 		return ResponseEntity.ok(poi);
 	}
 
-    @PutMapping(value = "/poi/{id}")
+    @PutMapping(value = "/{id}")
 	public ResponseEntity<Object> updatePOI(@PathVariable("id") long id, @RequestBody POI poi) {
 		if(!poiService.POIExistsByID(id)) throw new EntityNotFoundException();
 		poi.setId(id);
@@ -46,7 +46,7 @@ public class POIController{
 		return ResponseEntity.ok(updatedPoi);
 	}
 
-	@DeleteMapping(value = "/poi/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Object> deletePOI(@PathVariable("id") long id) {
 		POI poi = poiService.getPOI(id);
 		poiService.deletePOI(poi);
@@ -59,7 +59,7 @@ public class POIController{
 		return ResponseEntity.ok(pois);
 	}
 
-	@PostMapping(value = "")
+	@PostMapping(value = "/batch")
 	public ResponseEntity<Object> createPOIs(@RequestBody List<POI> pois) {
         List<POI> newPOIs = poiService.createPOIs(pois);
 		return ResponseEntity.ok(newPOIs);
