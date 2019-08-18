@@ -46,5 +46,13 @@ public class Question {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public POI getPoi() {
+        return poi;
+    }
+
+    public void setPoi(POI poi) {
+        this.poi = poi;
+    }
    
 }

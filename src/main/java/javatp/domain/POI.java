@@ -31,6 +31,9 @@ public class POI {
     @OneToMany(mappedBy = "poi")
     private List<Hint> hints;
 
+    @OneToMany(mappedBy = "question")
+    private List<Question> questions;
+
     public String getName() {
         return name;
     }
@@ -73,5 +76,13 @@ public class POI {
 
     public void setHints(List<Hint> hints) {
         this.hints = hints;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }
