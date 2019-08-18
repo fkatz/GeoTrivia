@@ -15,6 +15,10 @@ public class POIService {
     public POI getPOI(Long id) {
         return poiRepository.getOne(id);
     }
+    
+    public boolean POIExistsByID(Long id){
+        return poiRepository.existsById(id);
+    }
 
     public POI createPOI(POI poi) {
         if (poi.getLat() != 0 && poi.getLng() != 0 && poi.getName() != "") {

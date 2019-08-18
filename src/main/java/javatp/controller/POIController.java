@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +40,7 @@ public class POIController{
 
     @PutMapping(value = "/poi/{id}")
 	public ResponseEntity<Object> updatePOI(@PathVariable("id") long id, @RequestBody POI poi) {
-		poiService.getPOI(id);
+		if(!poiService.POIExistsByID(id)) throw new EntityNotFoundException();
 		poi.setId(id);
 		POI updatedPoi = poiService.updatePOI(poi);
 		return ResponseEntity.ok(updatedPoi);
