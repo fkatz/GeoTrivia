@@ -37,7 +37,7 @@ public class QuestionController{
 	}
 
     @PutMapping(value = "/question/{id}")
-	public ResponseEntity<Object> updatePOI(@PathVariable("id") long id, @RequestBody Question question) {
+	public ResponseEntity<Object> updateQuestion(@PathVariable("id") long id, @RequestBody Question question) {
 		if(!questionService.questionExistsByID(id)) throw new EntityNotFoundException();
 		question.setId(id);
 		Question updatedQuestion = questionService.updateQuestion(question);

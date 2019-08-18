@@ -1,31 +1,28 @@
 package javatp.domain;
 
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
-@Table(name = "Questions")
-public class Question {
+@Table(name = "Answers")
+public class Answer {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String content;
+    private Boolean isCorrect;
 
     @ManyToOne
-    @JoinColumn(name="poi_id")
-    private POI poi;
+    @JoinColumn(name="question_id")
+    private Question question;
 
-    @OneToMany(mappedBy = "answer")
-    private List<Answer> answers;
-
-    public Question() {}
+    public Answer() {}
 
     public Long getId() {
         return id;
@@ -43,19 +40,20 @@ public class Question {
         this.content = content;
     }
 
-    public POI getPoi() {
-        return poi;
+    public Boolean getIsCorrect() {
+        return isCorrect;
     }
 
-    public void setPoi(POI poi) {
-        this.poi = poi;
+    public void setISCorect(String content) {
+        this.content = content;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
    
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
 }
