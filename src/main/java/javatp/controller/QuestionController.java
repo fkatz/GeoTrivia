@@ -1,6 +1,7 @@
 package javatp.controller;
 
 import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,50 +16,64 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javatp.domain.Question;
+import javatp.domain.POI;
+import javatp.service.POIService;
 import javatp.service.QuestionService;
 
-
 @RestController
-@RequestMapping(value = "/api/questions")
-public class QuestionController{
+@RequestMapping(value="/api/pois/{poiId}/questions")
+public class QuestionController {
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private POIService poiService;
     
-	@PostMapping(value = "/question")
-	public ResponseEntity<Object> createQuestion(@RequestBody Question question) {
-		Question newQuestion = questionService.createQuestion(question);
-		return ResponseEntity.ok(newQuestion);
+    @PostMapping(value="")
+    public ResponseEntity<Object> createQuestion(@PathVariable("poiId") long poiId,@RequestBody Question question){
+        POI poi = poiService.getPOI(poiId);
+        question.setPoi(poi);
+        Question newQuestion = questionService.createQuestion(question);
+        return ResponseEntity.ok(newQuestion);
+    }
+
+    @GetMapping(value="/{id}")
+    public ResponseEntity<Object> getQuestion(@PathVariable("poiId") long poiId,@PathVariable("id") long id){
+        if(!questionService.questionExistsByID(poiId, id))
+        throw new EntityNotFoundException();
+        return ResponseEntity.ok(questionService.getQuestion(id));
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> updateQuestion(@PathVariable("poiId") long poiId,@PathVariable("id") long id,@RequestBody Question question){
+        if(!questionService.questionExistsByID(poiId, id))
+        throw new EntityNotFoundException();
+        question.setId(id);
+        question.setPoi(new POI(poiId));
+        Question updatedQuestion = questionService.updateQuestion(question);
+        return ResponseEntity.ok(updatedQuestion);
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<Object> deleteQuestion(@PathVariable("poiId") long poiId,@PathVariable("id") long id){
+        if(!questionService.questionExistsByID(poiId, id))
+        throw new EntityNotFoundException();
+        Question question = new Question(id);
+        questionService.deleteQuestion(question);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "")
+	public ResponseEntity<Object> getQuestions(@PathVariable("poiId") long poiId) {
+        List<Question> questions = poiService.getPOI(poiId).getQuestions();
+		return ResponseEntity.ok(questions);
     }
     
-    @GetMapping(value = "/question/{id}")
-	public ResponseEntity<Object> getQuestion(@PathVariable("id") long id) {
-		Question question = questionService.getQuestion(id);
-		return ResponseEntity.ok(question);
-	}
-
-    @PutMapping(value = "/question/{id}")
-	public ResponseEntity<Object> updateQuestion(@PathVariable("id") long id, @RequestBody Question question) {
-		if(!questionService.questionExistsByID(id)) throw new EntityNotFoundException();
-		question.setId(id);
-		Question updatedQuestion = questionService.updateQuestion(question);
-		return ResponseEntity.ok(updatedQuestion);
-	}
-
-	@DeleteMapping(value = "/question/{id}")
-	public ResponseEntity<Object> deleteQuestion(@PathVariable("id") long id) {
-		Question question = questionService.getQuestion(id);
-		questionService.deleteQuestion(question);
-		return ResponseEntity.ok().build();
-	}
-
-	@GetMapping(value = "")
-	public ResponseEntity<Object> getQuestions() {
-        List<Question> questions = questionService.getAllQuestions();
-		return ResponseEntity.ok(questions);
-	}
-
-	@PostMapping(value = "")
-	public ResponseEntity<Object> createQuestions(@RequestBody List<Question> questions) {
+    @PostMapping(value = "/batch")
+	public ResponseEntity<Object> createQuestions(@PathVariable("poiId") long poiId,@RequestBody List<Question> questions) {
+        POI poi = new POI(poiId);
+        for (Question question : questions) {
+            question.setPoi(poi);
+        }
         List<Question> newQuestions = questionService.createQuestions(questions);
 		return ResponseEntity.ok(newQuestions);
 	}

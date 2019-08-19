@@ -7,6 +7,8 @@ import javatp.exception.IncompleteObjectException;
 import java.util.List;
 
 import javatp.domain.Answer;
+import javatp.domain.POI;
+import javatp.domain.Question;
 import javatp.repository.AnswerRepository;
 
 @Service
@@ -18,8 +20,8 @@ public class AnswerService {
         return answerRepository.getOne(id);
     }
     
-    public boolean AnswerExistsByID(Long id){
-        return answerRepository.existsById(id);
+    public boolean answerExistsByID(Long poiId, Long questionId, Long id) {
+        return answerRepository.isInPOIAndQuestion(new POI(poiId), new Question(id), new Answer(id));
     }
 
     public Answer createAnswer(Answer answer) {

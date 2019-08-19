@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "Answers")
@@ -20,9 +22,13 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name="question_id")
+    @JsonIgnore
     private Question question;
 
     public Answer() {}
+    public Answer(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -48,10 +54,12 @@ public class Answer {
         this.content = content;
     }
 
+    @JsonIgnore
     public Question getQuestion() {
         return question;
     }
 
+    @JsonIgnore
     public void setQuestion(Question question) {
         this.question = question;
     }

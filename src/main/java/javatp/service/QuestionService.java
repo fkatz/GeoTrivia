@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import javatp.exception.IncompleteObjectException;
 import java.util.List;
 
+import javatp.domain.POI;
 import javatp.domain.Question;
 import javatp.repository.QuestionRepository;
 
@@ -17,8 +18,8 @@ public class QuestionService {
         return questionRepository.getOne(id);
     }
     
-    public boolean questionExistsByID(Long id){
-        return questionRepository.existsById(id);
+    public boolean questionExistsByID(Long poiId, Long id) {
+        return questionRepository.isInPOI(new POI(poiId), new Question(id));
     }
 
     public Question createQuestion(Question question) {

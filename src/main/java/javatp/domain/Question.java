@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Questions")
 public class Question {
@@ -20,12 +22,17 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name="poi_id")
+    @JsonIgnore
     private POI poi;
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "question")
+    @JsonIgnore
     private List<Answer> answers;
 
-    public Question() {}
+    public Question() {}    
+    public Question(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -43,18 +50,22 @@ public class Question {
         this.content = content;
     }
 
+    @JsonIgnore
     public POI getPoi() {
         return poi;
     }
 
+    @JsonIgnore
     public void setPoi(POI poi) {
         this.poi = poi;
     }
    
+    @JsonIgnore
     public List<Answer> getAnswers() {
         return answers;
     }
 
+    @JsonIgnore
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }

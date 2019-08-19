@@ -41,7 +41,8 @@ public class POI {
     @JsonIgnore
     private List<Hint> hints;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "poi")
+    @JsonIgnore
     private List<Question> questions;
 
     public String getName() {
@@ -92,10 +93,12 @@ public class POI {
         this.hints = hints;
     }
 
+    @JsonIgnore
     public List<Question> getQuestions() {
         return questions;
     }
 
+    @JsonIgnore
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }

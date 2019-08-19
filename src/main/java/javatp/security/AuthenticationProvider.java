@@ -12,8 +12,8 @@ import javatp.domain.User;
 import javatp.exception.AuthenticationException;
 import javatp.service.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 // La API utiliza JSON Web Tokens para autenticación.
 // Esta clase se encarga de generar y autenticar los tokens.
@@ -22,9 +22,7 @@ import org.slf4j.LoggerFactory;
 public class AuthenticationProvider {
     @Autowired
     private UserService users;
-    // Para logging en consola
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationProvider.class);
-
+     
     // Key para encriptación de tokens
     @Value("${jwt.secret}")
     private String secret;
