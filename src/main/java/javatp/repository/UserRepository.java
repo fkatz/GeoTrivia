@@ -10,4 +10,7 @@ import javatp.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(@Param("username") String username);
+
+    @Query("SELECT COUNT(user)>0 FROM User user WHERE user.username=?1")
+    boolean existsByUsername(String username);
 }
