@@ -26,7 +26,7 @@ public class HintService {
     }
 
     public Hint createHint(Hint hint) {
-        if (hint.getDescription() != "" && hint.getId() != 0 && hint.getPoi() != null) {
+        if (hint.getDescription() != "" && hint.getPoi() != null) {
             return hintRepository.save(hint);
         } else
             throw new IncompleteObjectException("All properties are required");

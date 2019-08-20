@@ -23,7 +23,7 @@ public class QuestionService {
     }
 
     public Question createQuestion(Question question) {
-        if (question.getId() != 0 && question.getContent() != "" && question.getPoi() != null) {
+        if (question.getContent() != "" && question.getPoi() != null) {
             return questionRepository.save(question);
         } else
             throw new IncompleteObjectException("All properties are required");

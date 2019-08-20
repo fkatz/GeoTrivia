@@ -25,7 +25,7 @@ public class AnswerService {
     }
 
     public Answer createAnswer(Answer answer) {
-        if (answer.getId() != 0 && answer.getContent() != "" && answer.getIsCorrect() != null && answer.getQuestion() != null) {
+        if (answer.getContent() != "" && answer.getIsCorrect() != null && answer.getQuestion() != null) {
             return answerRepository.save(answer);
         } else
             throw new IncompleteObjectException("All properties are required");

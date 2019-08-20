@@ -21,60 +21,62 @@ import javatp.service.HintService;
 import javatp.service.POIService;
 
 @RestController
-@RequestMapping(value="/api/pois/{poiId}/hints")
+@RequestMapping(value = "/api/pois/{poiId}/hints")
 public class HintController {
     @Autowired
     private HintService hintService;
     @Autowired
     private POIService poiService;
-    
-    @PostMapping(value="")
-    public ResponseEntity<Object> createHint(@PathVariable("poiId") long poiId,@RequestBody Hint hint){
-        POI poi = poiService.getPOI(poiId);
-        hint.setPoi(poi);
+
+    @PostMapping(value = "")
+    public ResponseEntity<Object> createHint(@PathVariable("poiId") long poiId, @RequestBody Hint hint) {
+        if (!poiService.POIExistsByID(poiId))
+            throw new EntityNotFoundException();
+        hint.setPoi(new POI(poiId));
         Hint newHint = hintService.createHint(hint);
         return ResponseEntity.ok(newHint);
     }
 
-    @GetMapping(value="/{id}")
-    public ResponseEntity<Object> getHint(@PathVariable("poiId") long poiId,@PathVariable("id") long id){
-        if(!hintService.hintExistsByID(poiId, id))
-        throw new EntityNotFoundException();
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Object> getHint(@PathVariable("poiId") long poiId, @PathVariable("id") long id) {
+        if (!hintService.hintExistsByID(poiId, id))
+            throw new EntityNotFoundException();
         return ResponseEntity.ok(hintService.getHint(id));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateHint(@PathVariable("poiId") long poiId,@PathVariable("id") long id,@RequestBody Hint hint){
-        if(!hintService.hintExistsByID(poiId, id))
-        throw new EntityNotFoundException();
+    public ResponseEntity<Object> updateHint(@PathVariable("poiId") long poiId, @PathVariable("id") long id,
+            @RequestBody Hint hint) {
+        if (!hintService.hintExistsByID(poiId, id))
+            throw new EntityNotFoundException();
         hint.setId(id);
         hint.setPoi(new POI(poiId));
         Hint updatedHint = hintService.updateHint(hint);
         return ResponseEntity.ok(updatedHint);
     }
 
-    @DeleteMapping(value="/{id}")
-    public ResponseEntity<Object> deleteHint(@PathVariable("poiId") long poiId,@PathVariable("id") long id){
-        if(!hintService.hintExistsByID(poiId, id))
-        throw new EntityNotFoundException();
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteHint(@PathVariable("poiId") long poiId, @PathVariable("id") long id) {
+        if (!hintService.hintExistsByID(poiId, id))
+            throw new EntityNotFoundException();
         Hint hint = new Hint(id);
         hintService.deleteHint(hint);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "")
-	public ResponseEntity<Object> getHints(@PathVariable("poiId") long poiId) {
+    public ResponseEntity<Object> getHints(@PathVariable("poiId") long poiId) {
         List<Hint> hints = poiService.getPOI(poiId).getHints();
-		return ResponseEntity.ok(hints);
+        return ResponseEntity.ok(hints);
     }
-    
+
     @PostMapping(value = "/batch")
-	public ResponseEntity<Object> createHints(@PathVariable("poiId") long poiId,@RequestBody List<Hint> hints) {
+    public ResponseEntity<Object> createHints(@PathVariable("poiId") long poiId, @RequestBody List<Hint> hints) {
         POI poi = new POI(poiId);
         for (Hint hint : hints) {
             hint.setPoi(poi);
         }
         List<Hint> newHints = hintService.createHints(hints);
-		return ResponseEntity.ok(newHints);
-	}
+        return ResponseEntity.ok(newHints);
+    }
 }
