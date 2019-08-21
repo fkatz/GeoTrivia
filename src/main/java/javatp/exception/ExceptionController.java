@@ -24,4 +24,10 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(EntityNotFoundException exception) {
         return ResponseEntity.badRequest().body(new Message("Entity not found", exception.getMessage()));
     }
+
+    @ExceptionHandler(value = UsernameTakenException.class)
+    public ResponseEntity<Object> exception(UsernameTakenException exception) {
+        return ResponseEntity.badRequest().body(new Message("Username already in use, select another", exception.getMessage()));
+    }
+
 }

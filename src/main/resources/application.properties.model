@@ -1,14 +1,24 @@
 jwt.secret=javainuse
-spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+##spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 ## default connection pool
-spring.datasource.hikari.connectionTimeout=20000
+spring.datasource.hikari.minimumIdle=2
 spring.datasource.hikari.maximumPoolSize=5
+spring.datasource.hikari.idleTimeout=10000
+spring.datasource.hikari.poolName=SpringBootJPAHikariCP
+spring.datasource.hikari.maxLifetime=60000
+spring.datasource.hikari.connectionTimeout=30000
+spring.datasource.testWhileIdle=true
+spring.datasource.test-on-borrow=true
+spring.datasource.validation-query=SELECT 1;
+spring.datasource.validation-interval=10000
 
 ## PostgreSQL
-spring.datasource.url=jdbc:postgresql://host:port/database
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url=jdbc:postgresql://pi.kosmov.space:5432/javatp
+spring.datasource.username=postgres
+spring.datasource.password=fedeSQL!
 
 #drop n create table again, good for testing, comment this in production
-#spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=create
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.spatial.dialect.postgis.PostgisDialect
