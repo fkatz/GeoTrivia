@@ -21,7 +21,7 @@ public class AnswerService {
     }
     
     public boolean answerExistsByID(Long poiId, Long questionId, Long id) {
-        return answerRepository.isInPOIAndQuestion(new POI(poiId), new Question(id), new Answer(id));
+        return answerRepository.isInPOIAndQuestion(new POI(poiId), new Question(questionId), new Answer(id));
     }
 
     public Answer createAnswer(Answer answer) {

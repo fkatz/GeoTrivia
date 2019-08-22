@@ -27,7 +27,7 @@ public class ExceptionController {
 
     @ExceptionHandler(value = UsernameTakenException.class)
     public ResponseEntity<Object> exception(UsernameTakenException exception) {
-        return ResponseEntity.badRequest().body(new Message("Username already in use, select another", exception.getMessage()));
+        return ResponseEntity.badRequest().body(new Message("Username already taken", exception.getMessage()));
     }
 
 }
