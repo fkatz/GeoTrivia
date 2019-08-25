@@ -25,6 +25,7 @@ public class POI {
     @Column(name = "location", nullable = false, columnDefinition = "geometry(Point,4326)")
     @JsonIgnore
     private Point location;
+    private String description;
 
     public POI() {
     }
@@ -59,6 +60,14 @@ public class POI {
 
     public void setLocation(Point location) {
         this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {
