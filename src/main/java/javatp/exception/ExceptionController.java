@@ -30,4 +30,8 @@ public class ExceptionController {
         return ResponseEntity.badRequest().body(new Message("Username already taken", exception.getMessage()));
     }
 
+    @ExceptionHandler(value=EntityContentRepeatedException.class)
+    public ResponseEntity<Object> exception(EntityContentRepeatedException exception) {
+        return ResponseEntity.badRequest().body(new Message("Content Repeated", exception.getMessage()));
+    }
 }
