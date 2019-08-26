@@ -12,4 +12,7 @@ import javatp.domain.Question;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Query("SELECT COUNT(answer)>0 FROM Answer answer WHERE answer.question.poi=?1 and answer.question=?2 and answer=?3")
     boolean isInPOIAndQuestion(POI poi, Question question, Answer answer);
+
+    @Query("SELECT COUNT(answer)>0 FROM Answer answer WHERE answer.question=?1 AND answer.isCorrect=TRUE")
+    boolean hasCorrect(Question question);
 }
