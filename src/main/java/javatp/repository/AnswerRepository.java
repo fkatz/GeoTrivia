@@ -15,4 +15,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query("SELECT COUNT(answer)>0 FROM Answer answer WHERE answer.question=?1 AND answer.isCorrect=TRUE")
     boolean hasCorrect(Question question);
+
+    @Query("SELECT COUNT(answer)>0 FROM Answer answer WHERE answer.question=?2 and answer.content=?1")
+    boolean existsByContentAndQuestion(String content, Question question);
 }

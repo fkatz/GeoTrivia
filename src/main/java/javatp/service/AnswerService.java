@@ -3,6 +3,8 @@ package javatp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javatp.exception.EntityContentRepeatedException;
 import javatp.exception.IncompleteObjectException;
 import java.util.List;
 
@@ -25,8 +27,11 @@ public class AnswerService {
     }
 
     public Answer createAnswer(Answer answer) {
-        if (answer.getContent() != "" && answer.getIsCorrect() != null && answer.getQuestion() != null) {
-            return answerRepository.save(answer);
+        if (!answer.getContent().equals("") && answer.getIsCorrect() != null && answer.getQuestion() != null) {
+            if(!answerRepository.existsByContentAndQuestion(answer.getContent(),answer.getQuestion())){
+                return answerRepository.save(answer);
+            }else
+                throw new EntityContentRepeatedException("Answer repeated");
         } else
             throw new IncompleteObjectException("All properties are required");
     }
