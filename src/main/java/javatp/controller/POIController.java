@@ -34,6 +34,8 @@ public class POIController{
     
     @GetMapping(value = "/{id}")
 	public ResponseEntity<Object> getPOI(@PathVariable("id") long id) {
+		if (!poiService.POIExistsByID(id))
+            throw new EntityNotFoundException();
 		POI poi = poiService.getPOI(id);
 		return ResponseEntity.ok(poi);
 	}
