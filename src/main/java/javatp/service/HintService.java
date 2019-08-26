@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javatp.domain.Hint;
 import javatp.domain.POI;
+import javatp.exception.EntityContentRepeatedException;
 import javatp.exception.IncompleteObjectException;
 import javatp.repository.HintRepository;
 
@@ -26,8 +27,11 @@ public class HintService {
     }
 
     public Hint createHint(Hint hint) {
-        if (hint.getDescription() != "" && hint.getPoi() != null) {
-            return hintRepository.save(hint);
+        if (!hint.getDescription().equals("") && hint.getPoi() != null) {
+            if(!hintRepository.existsByDescriptionAndPOI(hint.getDescription(), hint.getPoi())){
+                return hintRepository.save(hint);
+            } else
+                throw new EntityContentRepeatedException("Hint Repeated");
         } else
             throw new IncompleteObjectException("All properties are required");
     }

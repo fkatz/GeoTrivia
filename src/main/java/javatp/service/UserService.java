@@ -2,6 +2,7 @@ package javatp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javatp.exception.EntityContentRepeatedException;
 import javatp.exception.UsernameTakenException;
 import java.util.List;
 import javatp.domain.User;
@@ -27,16 +28,18 @@ public class UserService{
         return user;
     }
     public User createUser(User user) {
-        // Checkeo que el nombre no exista
-        if (!userRepo.existsByUsername(user.getUsername())) {
-            // Hashear la contraseña
-            user.setPassword(encoder.encode(user.getPassword()));
-            User savedUser = userRepo.save(user);
-            // Borrar la contraseña de las instancias
-            savedUser.setPassword(null);
-            user.setPassword(null);
-            return savedUser;
-        } else throw new UsernameTakenException("Username already in use, select another");
+        if(user.getUsername().equals("")&&user.getUsername()!=null){
+            // Checkeo que el nombre no exista
+            if (!userRepo.existsByUsername(user.getUsername())) {
+                // Hashear la contraseña
+                user.setPassword(encoder.encode(user.getPassword()));
+                User savedUser = userRepo.save(user);
+                // Borrar la contraseña de las instancias
+                savedUser.setPassword(null);
+                user.setPassword(null);
+                return savedUser;
+            } else throw new UsernameTakenException("Username already in use, select another");
+        } else throw new EntityContentRepeatedException("Username can't be empty");
     }
     public List<User> getAllUsers(){
         List<User> users = userRepo.findAll();

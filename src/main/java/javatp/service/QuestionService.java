@@ -2,6 +2,8 @@ package javatp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javatp.exception.EntityContentRepeatedException;
 import javatp.exception.IncompleteObjectException;
 import java.util.List;
 
@@ -17,14 +19,18 @@ public class QuestionService {
     public Question getQuestion(Long id) {
         return questionRepository.getOne(id);
     }
-    
+
     public boolean questionExistsByID(Long poiId, Long id) {
         return questionRepository.isInPOI(new POI(poiId), new Question(id));
     }
 
     public Question createQuestion(Question question) {
-        if (question.getContent() != "" && question.getPoi() != null) {
-            return questionRepository.save(question);
+        if (!question.getContent().equals("") && question.getPoi() != null && question.getContent() != null) {
+            if (!questionRepository.existsByContentAndPOI(question.getContent(), question.getPoi())) {
+                return questionRepository.save(question);
+            } else {
+                throw new EntityContentRepeatedException("Question Repeated");
+            }
         } else
             throw new IncompleteObjectException("All properties are required");
     }

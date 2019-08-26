@@ -22,7 +22,7 @@ public class POIService {
     }
 
     public POI createPOI(POI poi) {
-        if (poi.getLat() != 0 && poi.getLng() != 0 && poi.getName() != "") {
+        if (poi.getLat() != 0 && poi.getLng() != 0 && !poi.getName().equals("")) {
             return poiRepository.save(poi);
         } else
             throw new IncompleteObjectException("All properties are required");
