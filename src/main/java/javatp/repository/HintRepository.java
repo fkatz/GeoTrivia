@@ -12,6 +12,6 @@ public interface HintRepository extends JpaRepository<Hint, Long> {
     @Query("SELECT COUNT(hint)>0 FROM Hint hint WHERE hint.poi=?1 and hint=?2")
     boolean isInPOI(POI poi, Hint hint);
 
-    @Query("SELECT COUNT(hint)>0 FROM Hint hint WHERE hint.description=?1 and hint.POI=?2")
+    @Query("SELECT COUNT(hint)>0 FROM Hint hint WHERE hint.description=?1 and hint.poi=?2")
     boolean existsByDescriptionAndPOI(String description, POI poi);
 }
