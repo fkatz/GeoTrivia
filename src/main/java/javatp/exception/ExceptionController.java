@@ -34,4 +34,9 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(EntityContentRepeatedException exception) {
         return ResponseEntity.badRequest().body(new Message("Content Repeated", exception.getMessage()));
     }
+
+    @ExceptionHandler(value=DuplicatedCorrectAnswerException.class)
+    public ResponseEntity<Object> exception(DuplicatedCorrectAnswerException exception) {
+        return ResponseEntity.badRequest().body(new Message("More than one correct Answer", exception.getMessage()));
+    }
 }
