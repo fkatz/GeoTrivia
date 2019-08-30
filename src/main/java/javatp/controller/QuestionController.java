@@ -31,7 +31,7 @@ public class QuestionController {
     @PostMapping(value="")
     public ResponseEntity<Object> createQuestion(@PathVariable("poiId") long poiId,@RequestBody Question question){
         POI poi = poiService.getPOI(poiId);
-        question.setPoi(poi);
+        question.setPOI(poi);
         Question newQuestion = questionService.createQuestion(question);
         return ResponseEntity.ok(newQuestion);
     }
@@ -48,7 +48,7 @@ public class QuestionController {
         if(!questionService.questionExistsByID(poiId, id))
         throw new EntityNotFoundException();
         question.setId(id);
-        question.setPoi(new POI(poiId));
+        question.setPOI(new POI(poiId));
         Question updatedQuestion = questionService.updateQuestion(question);
         return ResponseEntity.ok(updatedQuestion);
     }
@@ -72,7 +72,7 @@ public class QuestionController {
 	public ResponseEntity<Object> createQuestions(@PathVariable("poiId") long poiId,@RequestBody List<Question> questions) {
         POI poi = new POI(poiId);
         for (Question question : questions) {
-            question.setPoi(poi);
+            question.setPOI(poi);
         }
         List<Question> newQuestions = questionService.createQuestions(questions);
 		return ResponseEntity.ok(newQuestions);

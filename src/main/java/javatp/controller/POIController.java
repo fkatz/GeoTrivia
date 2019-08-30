@@ -44,8 +44,8 @@ public class POIController{
 	public ResponseEntity<Object> updatePOI(@PathVariable("id") long id, @RequestBody POI poi) {
 		if(!poiService.POIExistsByID(id)) throw new EntityNotFoundException();
 		poi.setId(id);
-		POI updatedPoi = poiService.updatePOI(poi);
-		return ResponseEntity.ok(updatedPoi);
+		POI updatedPOI = poiService.updatePOI(poi);
+		return ResponseEntity.ok(updatedPOI);
 	}
 
 	@DeleteMapping(value = "/{id}")

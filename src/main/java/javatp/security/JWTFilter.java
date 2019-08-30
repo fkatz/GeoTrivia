@@ -32,6 +32,9 @@ public class JWTFilter extends GenericFilterBean {
             User user = authManager.authenticateToken(((HttpServletRequest) req).getHeader("Authorization"));
             if (user != null) {
                 ArrayList<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>();
+                if(user.isAdmin()){
+                list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                }
                 list.add(new SimpleGrantedAuthority("ROLE_USER"));
                 Authentication auth = new UsernamePasswordAuthenticationToken(user, "", list);
                 SecurityContextHolder.getContext().setAuthentication(auth);

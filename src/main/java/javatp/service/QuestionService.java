@@ -25,8 +25,8 @@ public class QuestionService {
     }
 
     public Question createQuestion(Question question) {
-        if (!question.getContent().equals("") && question.getPoi() != null && question.getContent() != null) {
-            if (!questionRepository.existsByContentAndPOI(question.getContent(), question.getPoi())) {
+        if (!question.getContent().equals("") && question.getPOI() != null && question.getContent() != null) {
+            if (!questionRepository.existsByContentAndPOI(question.getContent(), question.getPOI())) {
                 return questionRepository.save(question);
             } else {
                 throw new EntityContentRepeatedException("Question Repeated");
