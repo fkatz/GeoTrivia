@@ -28,9 +28,9 @@ public class AnswerService {
     }
 
     public Answer createAnswer(Answer answer) {
-        if (!answer.getContent().equals("") && answer.isCorrect() != null && answer.getQuestion() != null) {
+        if (!answer.getContent().equals("") && answer.getIsCorrect() != null && answer.getQuestion() != null) {
             if(!answerRepository.existsByContentAndQuestion(answer.getContent(), answer.getQuestion())) {
-                if(!(answer.isCorrect() && answerRepository.hasCorrect(answer.getQuestion()))) {
+                if(!(answer.getIsCorrect() && answerRepository.hasCorrect(answer.getQuestion()))) {
                     return answerRepository.save(answer);
                 } else throw new DuplicatedCorrectAnswerException("More than one correct Answer");
             } else throw new EntityContentRepeatedException("Answer repeated");

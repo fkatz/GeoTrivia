@@ -1,6 +1,5 @@
 package javatp.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +18,7 @@ public class Hint {
     private Long id;
     private String content;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne()
     @JoinColumn(name="poi_id")
     @JsonIgnore
     private POI poi;

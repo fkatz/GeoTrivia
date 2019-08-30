@@ -22,13 +22,12 @@ public class Question {
     private Long id;
     private String content;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne()
     @JoinColumn(name="poi_id")
     @JsonIgnore
     private POI poi;
 
     @OneToMany(mappedBy = "question",cascade = { CascadeType.PERSIST })
-    @JsonIgnore
     private List<Answer> answers;
 
     public Question() {}    
@@ -62,7 +61,6 @@ public class Question {
         this.poi = poi;
     }
    
-    @JsonIgnore
     public List<Answer> getAnswers() {
         return answers;
     }
@@ -78,7 +76,7 @@ public class Question {
     public Answer getCorrectAnswer(){
         Answer correct = null;
         for (Answer answer : answers) {
-            if(answer.isCorrect()) {
+            if(answer.getIsCorrect()) {
                 correct = answer;
                 break;
             }

@@ -28,6 +28,7 @@ public class GameService {
     POIService poiService;
 
     final private int NODES = 3;
+    final private int HINTS = 10;
 
     public Game getGame(Long id) {
         return gameRepository.getOne(id);
@@ -49,15 +50,16 @@ public class GameService {
             root.setNext(children);
             root.setPOI(null);
             game.setRootWaypoint(root);
+            game.setHintsLeft(HINTS);
             return gameRepository.save(game);
         } else
             throw new IncompleteObjectException("Player is required");
     }
 
-    public Waypoint setNextWaypoint(Waypoint waypoint){
-        Waypoint lastCorrect = waypoint.getLastCorrect();
-        lastCorrect.setNext(this.randomizeWaypoints(lastCorrect, this.NODES));
-        return lastCorrect;
+    public Waypoint setNextWaypoint(Game game){
+        Waypoint lastCorrect = game.getRootWaypoint().getLastCorrect();
+        lastCorrect.setNext(this.randomizeWaypoints(game.getRootWaypoint(), this.NODES));
+        return waypointRepository.save(lastCorrect);
     }
 
     public List<Waypoint> randomizeWaypoints(Waypoint root, int nodes) {

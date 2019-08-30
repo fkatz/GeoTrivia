@@ -1,5 +1,7 @@
 package javatp.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +40,14 @@ public class GameController {
     @PostMapping(value = "")
     public ResponseEntity<Object> createGame(@RequestBody POI poi) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Game game = gameService.findLastGameForUser(user);
+        if(game!=null){
+            game.setFinishTime(new Timestamp((new Date()).getTime()));
+            gameService.updateGame(game);
+        }
         if (poi.getLat() == null || poi.getLng() == null)
             throw new IncompleteObjectException("Latitude and longitude required");
-        Game game = new Game();
+        game = new Game();
         game.setPlayer(user);
         Game newGame = gameService.createAndInitializeGame(game, poi);
         return ResponseEntity.ok(newGame);
@@ -79,7 +86,10 @@ public class GameController {
         Game game = gameService.findLastGameForUser(user);
         Waypoint correct = game.getRootWaypoint().getLastCorrect();
         if (correct.getPOI().getLocation().distance(poi.getLocation()) < CORRECT_DISTANCE_THRESHOLD) {
-            this.gameService.setNextWaypoint(correct);
+            correct = this.gameService.setNextWaypoint(game);
+            for(Waypoint nextWaypoint:correct.getNext()){
+                nextWaypoint.setIsCorrrect(null);
+            }
             return ResponseEntity.ok(new WaypointGuessResponse(true, correct));
         }
         return ResponseEntity.ok(new WaypointGuessResponse(false, null));
@@ -123,7 +133,7 @@ public class GameController {
             }
         }
         for (Answer answer : question.getAnswers()) {
-            answer.setIsCorect(null);
+            answer.setIsCorrect(null);
         }
         return ResponseEntity.ok(waypoint.getQuestion());
     }

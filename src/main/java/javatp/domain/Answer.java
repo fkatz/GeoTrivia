@@ -46,14 +46,6 @@ public class Answer {
         this.content = content;
     }
 
-    public Boolean isCorrect() {
-        return isCorrect;
-    }
-
-    public void setIsCorect(String content) {
-        this.content = content;
-    }
-
     @JsonIgnore
     public Question getQuestion() {
         return question;
@@ -79,6 +71,14 @@ public class Answer {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Boolean getIsCorrect() {
+        return isCorrect;
+    }
+
+    public void setIsCorrect(Boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
    
 }

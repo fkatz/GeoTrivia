@@ -51,12 +51,12 @@ public class Waypoint {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "prev_id")
     @JsonIgnore
     private Waypoint prev;
 
-    @OneToMany(mappedBy = "prev", cascade = { CascadeType.PERSIST })
+    @OneToMany(mappedBy = "prev", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Waypoint> next;
 
     @ManyToOne
