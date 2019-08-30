@@ -46,11 +46,11 @@ public class Answer {
         this.content = content;
     }
 
-    public Boolean getIsCorrect() {
+    public Boolean isCorrect() {
         return isCorrect;
     }
 
-    public void setISCorect(String content) {
+    public void setIsCorect(String content) {
         this.content = content;
     }
 
@@ -62,6 +62,23 @@ public class Answer {
     @JsonIgnore
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Answer other = (Answer) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
    
 }

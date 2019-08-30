@@ -1,6 +1,8 @@
 package javatp.domain;
 
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,12 +22,12 @@ public class Question {
     private Long id;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST })
     @JoinColumn(name="poi_id")
     @JsonIgnore
     private POI poi;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question",cascade = { CascadeType.PERSIST })
     @JsonIgnore
     private List<Answer> answers;
 
@@ -51,12 +53,12 @@ public class Question {
     }
 
     @JsonIgnore
-    public POI getPoi() {
+    public POI getPOI() {
         return poi;
     }
 
     @JsonIgnore
-    public void setPoi(POI poi) {
+    public void setPOI(POI poi) {
         this.poi = poi;
     }
    
@@ -65,8 +67,22 @@ public class Question {
         return answers;
     }
 
-    @JsonIgnore
     public void setAnswers(List<Answer> answers) {
+        for (Answer answer : answers) {
+            answer.setQuestion(this);
+        }
         this.answers = answers;
+    }
+
+    @JsonIgnore
+    public Answer getCorrectAnswer(){
+        Answer correct = null;
+        for (Answer answer : answers) {
+            if(answer.isCorrect()) {
+                correct = answer;
+                break;
+            }
+        }
+        return correct;
     }
 }

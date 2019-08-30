@@ -19,7 +19,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 @Entity
-@Table(name = "Pois")
+@Table(name = "POIs")
 public class POI {
     private String name;
     @Column(name = "location", nullable = false, columnDefinition = "geometry(Point,4326)")

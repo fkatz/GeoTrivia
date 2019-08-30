@@ -1,5 +1,6 @@
 package javatp.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +17,9 @@ public class Hint {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String description;
+    private String content;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST })
     @JoinColumn(name="poi_id")
     @JsonIgnore
     private POI poi;
@@ -37,19 +38,19 @@ public class Hint {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public POI getPoi() {
+    public POI getPOI() {
         return poi;
     }
 
-    public void setPoi(POI poi) {
+    public void setPOI(POI poi) {
         this.poi = poi;
     }
     

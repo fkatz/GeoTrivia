@@ -39,4 +39,14 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(DuplicatedCorrectAnswerException exception) {
         return ResponseEntity.badRequest().body(new Message("More than one correct Answer", exception.getMessage()));
     }
+
+    @ExceptionHandler(value=NoHintsLeftException.class)
+    public ResponseEntity<Object> exception(NoHintsLeftException exception) {
+        return ResponseEntity.badRequest().body(new Message("No hints left", exception.getMessage()));
+    }
+
+    @ExceptionHandler(value=NoQuestionsInPOIException.class)
+    public ResponseEntity<Object> exception(NoQuestionsInPOIException exception) {
+        return ResponseEntity.badRequest().body(new Message("No questions in POI", exception.getMessage()));
+    }
 }

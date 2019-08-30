@@ -1,6 +1,8 @@
 package javatp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javatp.domain.POI;
@@ -16,8 +18,20 @@ public class POIService {
     public POI getPOI(Long id) {
         return poiRepository.getOne(id);
     }
-    
-    public boolean POIExistsByID(Long id){
+
+    public List<POI> findClosest(POI poi, int limit) {
+        return poiRepository.findClosest(poi.getLat(), poi.getLng(), limit);
+    }
+
+    public List<POI> findClosestExcluding(POI poi, List<POI> excludedPOIs, int limit) {
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (POI ePOI : excludedPOIs) {
+            ids.add(ePOI.getId());
+        }
+        return poiRepository.findClosestExcluding(poi.getLat(), poi.getLng(), limit, ids);
+    }
+
+    public boolean POIExistsByID(Long id) {
         return poiRepository.existsById(id);
     }
 

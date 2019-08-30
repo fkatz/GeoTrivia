@@ -27,8 +27,8 @@ public class HintService {
     }
 
     public Hint createHint(Hint hint) {
-        if (!hint.getDescription().equals("") && hint.getPoi() != null) {
-            if(!hintRepository.existsByDescriptionAndPOI(hint.getDescription(), hint.getPoi())){
+        if (!hint.getContent().equals("") && hint.getPOI() != null) {
+            if(!hintRepository.existsByContentAndPOI(hint.getContent(), hint.getPOI())){
                 return hintRepository.save(hint);
             } else
                 throw new EntityContentRepeatedException("Hint Repeated");

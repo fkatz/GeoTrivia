@@ -22,13 +22,17 @@ public class UserService{
         user.setPassword(null);
         return user;
     }
+
+    public boolean userExistsById(Long id){
+        return userRepo.existsById(id);
+    }
     public User findUser(String username){
         User user = userRepo.findByUsername(username);
         user.setPassword(null);
         return user;
     }
     public User createUser(User user) {
-        if(user.getUsername().equals("")&&user.getUsername()!=null){
+        if(!user.getUsername().equals("")&&user.getUsername()!=null){
             // Checkeo que el nombre no exista
             if (!userRepo.existsByUsername(user.getUsername())) {
                 // Hashear la contraseña

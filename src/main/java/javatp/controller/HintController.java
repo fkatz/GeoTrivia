@@ -32,7 +32,7 @@ public class HintController {
     public ResponseEntity<Object> createHint(@PathVariable("poiId") long poiId, @RequestBody Hint hint) {
         if (!poiService.POIExistsByID(poiId))
             throw new EntityNotFoundException();
-        hint.setPoi(new POI(poiId));
+        hint.setPOI(new POI(poiId));
         Hint newHint = hintService.createHint(hint);
         return ResponseEntity.ok(newHint);
     }
@@ -50,7 +50,7 @@ public class HintController {
         if (!hintService.hintExistsByID(poiId, id))
             throw new EntityNotFoundException();
         hint.setId(id);
-        hint.setPoi(new POI(poiId));
+        hint.setPOI(new POI(poiId));
         Hint updatedHint = hintService.updateHint(hint);
         return ResponseEntity.ok(updatedHint);
     }
@@ -74,7 +74,7 @@ public class HintController {
     public ResponseEntity<Object> createHints(@PathVariable("poiId") long poiId, @RequestBody List<Hint> hints) {
         POI poi = new POI(poiId);
         for (Hint hint : hints) {
-            hint.setPoi(poi);
+            hint.setPOI(poi);
         }
         List<Hint> newHints = hintService.createHints(hints);
         return ResponseEntity.ok(newHints);

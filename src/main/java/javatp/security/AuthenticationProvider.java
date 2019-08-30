@@ -55,6 +55,8 @@ public class AuthenticationProvider {
             // Se pueden agregar propiedades con el método put(String,Object)
             Claims claims = Jwts.claims();
 
+            claims.put("id", user.getId());
+
             // Se debe setear el usuario como sujeto del token
             claims.setSubject(user.getUsername());
 
